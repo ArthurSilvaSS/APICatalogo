@@ -2,7 +2,7 @@
 
 namespace APICatalogo.Repositores;
 
-public class ICategoriaRepository
+public interface ICategoriaRepository
 {
     IEnumerable<Categoria> GetCategorias();
     Categoria GetCategoria(int id);

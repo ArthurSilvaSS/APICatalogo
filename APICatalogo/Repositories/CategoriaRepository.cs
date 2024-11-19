@@ -51,4 +51,18 @@ public class CategoriaRepository : ICategoriaRepository
 
         return categoria;
     }
+
+    //Delete Categoria
+    public Categoria Delete(int id)
+    {
+        var categoria = _context.Categorias.Find(id);
+
+        if (categoria is null)
+            throw new ArgumentNullException(nameof(categoria));
+
+        _context.Categorias.Remove(categoria);
+        _context.SaveChanges();
+
+        return categoria;
+    }
 }
