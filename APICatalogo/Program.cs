@@ -6,6 +6,7 @@ using APICatalogo.Repositores;
 using APICatalogo.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using APICatalogo.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,11 +37,12 @@ builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRapository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+builder.Services.AddAutoMapper(typeof(ProdutoDTOMappingProfile));
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 {
     LogLevel = LogLevel.Information
 }));
+
 
 var app = builder.Build();
 
