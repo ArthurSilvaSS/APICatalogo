@@ -6,20 +6,20 @@ using APICatalogo.Repositores;
 using APICatalogo.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using APICatalogo.DTOs;
+using APICatalogo.DTOs.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(typeof(ApiExcepionFilter));
-})
+    {
+        options.Filters.Add(typeof(ApiExcepionFilter));
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    });
+    }).AddNewtonsoftJson();
       
 
 builder.Services.AddEndpointsApiExplorer();
