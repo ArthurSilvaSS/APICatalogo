@@ -1,4 +1,8 @@
-﻿namespace APICatalogo.Pagination;
+﻿using APICatalogo.DTOs;
+using APICatalogo.DTOs.Mappings;
+using APICatalogo.Models;
+
+namespace APICatalogo.Pagination;
     public class PagedLitst<T> : List<T> where T : class
     {
         public int CurrentPage { get; private set; }
@@ -26,5 +30,5 @@
 
             return new PagedLitst<T>(items, count, pageNumber, pageSize);
         }
-    }
+}
 
