@@ -57,6 +57,29 @@ public class ProdutosController : ControllerBase
         var produtosDto = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
         return Ok(produtosDto);
     }
+
+    [HttpGet("filter/preco/pagination")]
+    public ActionResult<IEnumerable<ProdutoDTO>> GetProdutosFilterPreco([FromQuery] ProdutosFiltroPreco produtoFilterParameters)
+    {
+        var produtos = _ouf.ProdutoRepository.GetProdutosFiltroPreco(produtoFilterParameters);
+
+        var metadata = new
+        {
+            produtos.TotalCount,
+            produtos.PageSize,
+            produtos.CurrentPage,
+            produtos.TotalPages,
+            produtos.HasNext,
+            produtos.HasPrevious
+        };
+
+        Response.Headers.Append("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        var produtosDto = _mapper.Map<IEnumerable<ProdutoDTO>>(produtos);
+        return Ok(produtosDto);
+
+    }
+
     //Get Produtos
     [HttpGet]
     public ActionResult<IEnumerable<ProdutoDTO>> Get()
