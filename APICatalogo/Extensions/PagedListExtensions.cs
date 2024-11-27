@@ -1,13 +1,12 @@
 ﻿using APICatalogo.Models;
 using APICatalogo.DTOs;
 using APICatalogo.DTOs.Mappings;
-using APICatalogo.Pagination; // Aqui você importa as funções de mapeamento.
+using APICatalogo.Pagination; 
 
 namespace APICatalogo.Extensions
 {
     public static class PagedListExtensions
     {
-        // Método de extensão para converter PagedLitst<Categoria> para IEnumerable<CategoriaDTO>
         public static IEnumerable<CategoriaDTO> ToCategoriaDtoList(this PagedLitst<Categoria> categorias)
         {
             if (categorias == null || !categorias.Any())
