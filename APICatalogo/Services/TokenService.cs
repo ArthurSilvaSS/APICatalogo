@@ -5,8 +5,8 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace APICatalogo.Services;
-    public class TokenServices : ITokenService
-    {
+    public class TokenService : ITokenService
+{
         public JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims, IConfiguration _config)
         {
             var key = _config.GetSection("JWT").GetValue<string>("SecretKey") ??

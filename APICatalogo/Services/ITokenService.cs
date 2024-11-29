@@ -2,7 +2,7 @@
 using System.Security.Claims;
 
 namespace APICatalogo.Services;
-    public class ITokenService
+    public interface ITokenService
     {
         JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims, IConfiguration _config);
 

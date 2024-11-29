@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using APICatalogo.DTOs.Mappings;
 using APICatalogo.Models;
+using APICatalogo.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer();
 builder.Services.AddIdentity<AplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
 
 string mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -72,6 +74,8 @@ builder.Services.AddScoped<IProdutoRepository, ProdutoRapository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(typeof(ProdutoDTOMappingProfile));
+builder.Services.AddScoped<ITokenService, TokenService>();
+
 builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration
 {
     LogLevel = LogLevel.Information
