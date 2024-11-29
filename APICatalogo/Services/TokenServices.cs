@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,6 +32,23 @@ namespace APICatalogo.Services;
             var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
             return token;
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var secureRandoBytes = new byte[128];
+
+            using var randomNumberGenerator = RandomNumberGenerator.Create();
+
+            randomNumberGenerator.GetBytes(secureRandoBytes);
+
+            var refreshToken = Convert.ToBase64String(secureRandoBytes);
+
+            return refreshToken;
+        }
+
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token, IConfiguration _config)
+        {
         }
     }
 
