@@ -107,6 +107,11 @@ builder.Services.AddAuthorization(options =>
                             policy.RequireRole("superAdmin").RequireClaim("id", "arthur"));
 
     options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
+
+    options.AddPolicy("ExclusivePolicyOnly", policy =>
+                            policy.RequireAssertion(context =>
+                            context.User.HasClaim(claim => claim.Type == "id" && claim.Value == "arthur")
+                            || context.User.IsInRole("superAdmin")));
 });
 
 
