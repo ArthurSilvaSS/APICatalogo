@@ -99,6 +99,16 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+
+    options.AddPolicy("SuperAdminOnly", policy =>
+                            policy.RequireRole("superAdmin").RequireClaim("id", "arthur"));
+
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("user"));
+});
+
 
 builder.Services.AddScoped<ApiLoggingFilter>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
