@@ -6,11 +6,13 @@ using APICatalogo.Pagination;
 using Newtonsoft.Json;
 using APICatalogo.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using X.PagedList;
 
 
 namespace APICatalogo.Controllers;
 
+[EnableCors("OrigensComAcessoPermitido")]
 [Route("[controller]")]
 [ApiController]
 
@@ -27,7 +29,7 @@ public class CategoriasController : ControllerBase
 
     //Get Categorias
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public async Task<ActionResult<IEnumerable<CategoriaDTO>>> Get()
     {
        var categorias = await _uof.CategoriaRepository.GetAllAsync();
@@ -73,6 +75,7 @@ public class CategoriasController : ControllerBase
     }
 
     //Get Categorias Id
+    [DisableCors]
     [HttpGet("{id:int}", Name = "ObterCategoria")]
     public async Task<ActionResult<CategoriaDTO>> Get(int id)
     {
