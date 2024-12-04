@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using APICatalogo.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.RateLimiting;
 using X.PagedList;
 
 
@@ -15,6 +16,7 @@ namespace APICatalogo.Controllers;
 [EnableCors("OrigensComAcessoPermitido")]
 [Route("[controller]")]
 [ApiController]
+[EnableRateLimiting("fixedwindow")]
 
 public class CategoriasController : ControllerBase
 {
@@ -29,6 +31,7 @@ public class CategoriasController : ControllerBase
 
     //Get Categorias
     [HttpGet]
+    [DisableRateLimiting]
     //[Authorize]
     public async Task<ActionResult<IEnumerable<CategoriaDTO>>> Get()
     {

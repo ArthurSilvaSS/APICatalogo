@@ -12,6 +12,7 @@ using APICatalogo.Models;
 using APICatalogo.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -126,6 +127,20 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    rateLimiterOptions.AddFixedWindowLimiter(policyName: "fixedwindow",
+        options =>
+        {
+            options.PermitLimit = 1;
+            options.Window = TimeSpan.FromSeconds(5);
+            options.QueueLimit = 0;
+        });
+    rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+
+
 builder.Services.AddScoped<ApiLoggingFilter>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRapository>();
@@ -151,6 +166,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+app.UseRateLimiter();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
