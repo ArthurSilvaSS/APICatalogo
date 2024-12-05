@@ -7,8 +7,10 @@ using APICatalogo.Repositores;
 using APICatalogo.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 using APICatalogo.DTOs.Mappings;
 using APICatalogo.Models;
+using APICatalogo.RateLimitOptions;
 using APICatalogo.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -126,17 +128,37 @@ builder.Services.AddAuthorization(options =>
                             || context.User.IsInRole("superAdmin")));
 });
 
+var myOptions = new MyRateLimitOptions();
+builder.Configuration.GetSection(MyRateLimitOptions.MyRateLimit).Bind(myOptions);
+
 
 builder.Services.AddRateLimiter(rateLimiterOptions =>
 {
     rateLimiterOptions.AddFixedWindowLimiter(policyName: "fixedwindow",
         options =>
         {
-            options.PermitLimit = 1;
-            options.Window = TimeSpan.FromSeconds(5);
-            options.QueueLimit = 0;
+            options.PermitLimit = myOptions.PermitLimit;
+            options.Window = TimeSpan.FromSeconds(myOptions.Window);
+            options.QueueLimit = myOptions.QueueLimit;
+            options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
         });
     rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpcontext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpcontext.User.Identity?.Name ??
+                          httpcontext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 5,
+                QueueLimit = 0,
+                Window = TimeSpan.FromSeconds(10)
+            }));
 });
 
 
