@@ -46,11 +46,27 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 
-//builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "apicatalgo", Version = "v1" });
 
+   // c.SwaggerDoc("v1", new OpenApiInfo { Title = "apicatalgo", Version = "v1" });
+
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "APICatalago",
+        Description = "Catalago de Produtos e Categorias",
+        TermsOfService = new Uri("https://google.com.br"),
+        Contact = new OpenApiContact
+        {
+            Name = "Arthur",
+            Email = "arthur.silva443@gmail.com",
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Usar sobre LICX",
+        }
+    });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
