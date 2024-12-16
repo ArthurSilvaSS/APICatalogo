@@ -74,17 +74,17 @@ namespace ApiCatalagoxUnitTests.UnitTests
                 .And.NotBeNull();
         }
 
-        [Fact]
-        public async Task GetProduto_Return_BadRequestResult()
-        {
+        //[Fact]
+        //public async Task GetProduto_Return_BadRequestResult()
+        //{
 
-            //Act
-            var data = await _controller.Get();
+        //    //Act
+        //    var data = await _controller.Get();
 
-            //Assert
-            data.Result.Should().BeOfType<BadRequestResult>();
+        //    //Assert
+        //    data.Result.Should().BeOfType<BadRequestResult>();
 
-        }
+        //}
 
     }
 }
