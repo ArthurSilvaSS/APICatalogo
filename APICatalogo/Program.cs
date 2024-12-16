@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using APICatalogo.Context;
 using APICatalogo.Extensions;
@@ -76,6 +77,9 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Bearer JWT",
     });
+
+    var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {

@@ -17,7 +17,7 @@ namespace APICatalogo.Controllers;
 [Route("[controller]")]
 [ApiController]
 [EnableRateLimiting("fixedwindow")]
-
+[Produces("application/json")]
 public class CategoriasController : ControllerBase
 {
     private readonly IUnitOfWork _uof;
@@ -28,7 +28,10 @@ public class CategoriasController : ControllerBase
         _logger = logger;
         _uof = uof;
     }
-
+    /// <summary>
+    /// Obtem uma lista de objetos Categoria
+    /// </summary>
+    /// <returns>Uma lista de objetos categoria</returns>
     //Get Categorias
     [HttpGet]
     [DisableRateLimiting]
