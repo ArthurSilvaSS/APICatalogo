@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using APICatalogo.Context;
+using APICatalogo.Controllers;
 using APICatalogo.DTOs.Mappings;
 using APICatalogo.Repositories;
 using AutoMapper;
@@ -13,9 +14,10 @@ namespace ApiCatalagoxUnitTests.UnitTests
 {
     public class ProdutosUnitTestController
     {
-        private IUnitOfWork repository;
-        private IMapper mapper;
+        public IUnitOfWork repository;
+        public IMapper mapper;
 
+        public ProdutosController Controller { get; }
         public static DbContextOptions<AppDbContext> dbContextOptions { get; }
         public static string connectionString = "Server=localhost;DataBase=ApiCatalogoDB;Uid=root;Pwd=1125";
 
@@ -36,7 +38,9 @@ namespace ApiCatalagoxUnitTests.UnitTests
             mapper = config.CreateMapper();
 
             var context = new AppDbContext(dbContextOptions);
-            repository = new UnitOfWork(context);
+            var repository = new UnitOfWork(context);
+
+            Controller = new ProdutosController(repository, mapper);
         }
     }
 }
