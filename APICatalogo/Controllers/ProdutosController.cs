@@ -21,6 +21,9 @@ public class ProdutosController : ControllerBase
 
     private readonly IUnitOfWork _ouf;
     private readonly IMapper _mapper;
+    public readonly IUnitOfWork repository;
+    public readonly IMapper mapper;
+
     public ProdutosController(IUnitOfWork ouf, IMapper mapper)
     {
         _ouf = ouf;
@@ -88,6 +91,7 @@ public class ProdutosController : ControllerBase
 
     //Get ProdutosId
     [HttpGet("{id}", Name = "ObterProduto")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<Produto>> Get(int id)
     {
         var produto = await _ouf.ProdutoRepository.GetAsync(c => c.ProdutoId == id);
@@ -103,6 +107,8 @@ public class ProdutosController : ControllerBase
 
     //Post Produto
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Post(ProdutoDTO produtoDto)
     {
         if (produtoDto is null)
@@ -167,6 +173,8 @@ public class ProdutosController : ControllerBase
 
     //Delete Produto
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProdutoDTO>> Delete(int id)
     {
         var produto = await _ouf.ProdutoRepository.GetAsync(p => p.ProdutoId == id);
@@ -176,10 +184,11 @@ public class ProdutosController : ControllerBase
             return NotFound("Produto nao encontrado...");
         }
 
-       var produtoDeletado = _ouf.ProdutoRepository.Delete(produto);
+        var produtoDeletado = _ouf.ProdutoRepository.Delete(produto);
         await _ouf.commitAsync();
 
         var produtoDeletadoDto = _mapper.Map<ProdutoDTO>(produtoDeletado);
         return Ok(produtoDeletadoDto);
     }
+
 }
