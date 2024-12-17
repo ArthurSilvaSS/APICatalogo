@@ -28,7 +28,7 @@ namespace ApiCatalagoxUnitTests.UnitTests
             //Act
             var data = await _controller.Get(prodId);
 
-            //Assert (fluentassertions)
+            //Assert
             data.Result.Should().BeOfType<OkObjectResult>()
                 .Which.StatusCode.Should().Be(200);
         }
