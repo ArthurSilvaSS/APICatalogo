@@ -44,7 +44,7 @@ public class CategoriasController : ControllerBase
         return Ok(categoriasDto);
     }
 
-    [HttpGet("pagination")]
+    [HttpGet("pagination")] //PAGINACAO
     public async Task<ActionResult<IEnumerable<CategoriaDTO>>> Get([FromQuery] CategoriasParameters categoriasParameters)
     {
         var categorias = await _uof.CategoriaRepository.GetCategoriasAsync(categoriasParameters);
